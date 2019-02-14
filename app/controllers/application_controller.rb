@@ -1,11 +1,14 @@
 class ApplicationController < ActionController::Base
-  before_action :authenticate_user
+  before_action :authenticate_user, except: [:new, :create]
+
+  def success
+  end
 
   private
 
     def authenticate_user
       client_id = ENV['MEETUP_CONSUMER_KEY']
-      redirect_uri = CGI.escape("https://localhost:3000/auth")
+      redirect_uri = CGI.escape("http://localhost:3000/auth")
       meetup_url = "https://secure.meetup.com/oauth2/authorize?client_id=#{client_id}&response_type=code&redirect_uri=#{redirect_uri}"
       redirect_to meetup_url unless logged_in?
     end
